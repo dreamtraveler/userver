@@ -1,0 +1,36 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <ClCompile Include="conn.cpp" />
+    <ClCompile Include="event_loop.cpp" />
+    <ClCompile Include="tcp_conn.cpp" />
+    <ClCompile Include="tcp_server.cpp" />
+    <ClCompile Include="timer.cpp" />
+    <ClCompile Include="timeval.cpp" />
+    <ClCompile Include="log.cpp" />
+    <ClCompile Include="reactor.cpp" />
+    <ClCompile Include="buffer.cpp" />
+    <ClCompile Include="servlet.cpp" />
+    <ClCompile Include="serial.cpp" />
+    <ClCompile Include="application.cpp" />
+    <ClCompile Include="net_coroutine.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="conn.h" />
+    <ClInclude Include="event_loop.h" />
+    <ClInclude Include="tcp_conn.h" />
+    <ClInclude Include="tcp_server.h" />
+    <ClInclude Include="timer.h" />
+    <ClInclude Include="timeval.h" />
+    <ClInclude Include="log.h" />
+    <ClInclude Include="platform.h" />
+    <ClInclude Include="reactor.h" />
+    <ClInclude Include="buffer.h" />
+    <ClInclude Include="slice.h" />
+    <ClInclude Include="gx.h" />
+    <ClInclude Include="servlet.h" />
+    <ClInclude Include="serial.h" />
+    <ClInclude Include="application.h" />
+    <ClInclude Include="net_coroutine.h" />
+  </ItemGroup>
+</Project>
