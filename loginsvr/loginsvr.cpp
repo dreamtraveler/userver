@@ -18,7 +18,7 @@ void register_needed_servlet() {
 
 std::vector<std::shared_ptr<TCPConn>> conn_vec;
 static int __id;
-int MAX_CONN = 1;
+int MAX_CONN = 5000;
 void test(co_pull_t &sink) {
 	co_param_t param  = sink.get();
 	uint32_t id = std::get<0>(param);
@@ -67,22 +67,38 @@ void test(co_pull_t &sink) {
 
 static int connected_count = 0;
 
+void build_connect() {
+	auto conn = std::make_shared<TCPConn>();
+	conn->connect_ok_handler([]() {
+		connected_count++;
+	});
+	conn->connect_fail_handler([]() {
+		//connected_count--;
+	});
+	int cid = conn->id();
+	conn->disconnect_handler([cid]() {
+		auto it = conn_vec.begin();
+		log_debug("disconnect_handler, conn.id=%zd", cid);
+		for (; it != conn_vec.end(); ++it) {
+			if ((*it)->id() == cid) {
+				conn_vec.erase(it);
+				connected_count--;
+				if (connected_count == 0) {
+					conn_vec.resize(0);
+				}
+				return;
+			}
+		}
+	});
+	conn_vec.emplace_back(conn);
+	conn->connect("127.0.0.1", 8890);
+}
+
 int main() {
 	the_app->init();
 
 	for (int i = 0; i < MAX_CONN; ++i) {
-		auto conn = std::make_shared<TCPConn>();
-		conn->connect_ok_handler([]() {
-			connected_count++;
-		});
-		conn->connect_fail_handler([]() {
-			//connected_count--;
-		});
-		conn->disconnect_handler([]() {
-			connected_count--;
-		});
-		conn_vec.emplace_back(conn);
-		conn->connect("127.0.0.1", 8890);
+		build_connect();
 	}
 
 	Timer t([]() {
@@ -98,10 +114,14 @@ int main() {
 
 	Timer t3([&t]() {
 		t.stop();
-        conn_vec.clear();
+
+		auto it = conn_vec.begin();
+		for (; it != conn_vec.end(); ++it) {
+			(*it)->close();
+		}
 	});
 	
-	t.start(2000, 1);
+	t.start(2000, 30000);
 	t2.start(2000, 1000);
 
 	t3.start(60000, 0);

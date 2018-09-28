@@ -3,6 +3,7 @@
 
 #include <string>
 #include <memory>
+#include <queue>
 #include "uv.h"
 #include "platform.h"
 #include "buffer.h"
@@ -18,14 +19,14 @@ namespace gx {
 		connected,
 		closed,
 	};
+
+	typedef struct {
+		uv_write_t req;
+		uv_buf_t buf;
+	} write_req_t;
+
 	class TCPConn : public std::enable_shared_from_this<TCPConn>
 	{
-
-		typedef struct {
-			uv_write_t req;
-			uv_buf_t buf;
-		} write_req_t;
-
 		typedef std::function<void()> cb_handler;
 
 	public:
@@ -66,6 +67,7 @@ namespace gx {
 		void disconnect_handler(cb_handler handler) {
 			_disconnect_handler = handler;
 		}
+		static int write_req_count();
 
 	private:
 		static void alloc(uv_handle_t* handle, size_t suggested_size, uv_buf_t* buf);
@@ -73,6 +75,8 @@ namespace gx {
 		static void after_write(uv_write_t* req, int status);
 		static void after_connect(uv_connect_t* handle, int status);
 		static void after_close(uv_handle_t *handle);
+		static write_req_t* pop_write_req();
+		static void push_write_req(write_req_t*);
 
 		void init(uv_loop_t *loop);
 		void on_recv(char* buf, size_t nread);
@@ -80,12 +84,16 @@ namespace gx {
 		int on_response(uint16_t msgid, uint32_t req, Buffer* buf);
 
 	private:
-		static const int READ_BUF_SIZE;
-		static const int WRITE_BUF_SIZE;
+		static const int READ_BUF_SIZE{8192};
+		static const int WRITE_REQ_QUEUE_SIZE{256};
+
 		static Buffer _send_tmp_buf;
 		static uint32_t _genseq;
+		static std::queue<write_req_t*> _write_req_queue;
+
 		Buffer _read_msg_buf;
 		uv_tcp_t _socket;
+		char _inner_buf[READ_BUF_SIZE];
 		uv_buf_t _read_buf;			//接受数据的buf
 		uv_connect_t _connect_req;	//连接时请求
 		uv_write_t _write_req;

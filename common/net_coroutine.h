@@ -123,7 +123,7 @@ namespace gx {
 
 	private:
 		static std::unordered_map<unsigned, std::shared_ptr<NetCoroutine>> _co_map;
-		static int _incrid;
+		static uint32_t _incrid;
 		uint32_t _id;
 		uint32_t _seq;
 		std::shared_ptr<TCPConn> _conn;

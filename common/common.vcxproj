@@ -41,6 +41,7 @@
     <ClInclude Include="gx.h" />
     <ClInclude Include="event_loop.h" />
     <ClInclude Include="log.h" />
+    <ClInclude Include="object_pool.h" />
     <ClInclude Include="platform.h" />
     <ClInclude Include="reactor.h" />
     <ClInclude Include="serial.h" />

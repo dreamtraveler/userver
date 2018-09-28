@@ -9,10 +9,9 @@
 
 namespace gx {
 
-	const int TCPConn::READ_BUF_SIZE = 8192;
-	const int TCPConn::WRITE_BUF_SIZE = 8192;
 	uint32_t TCPConn::_genseq = 0;
 	Buffer TCPConn::_send_tmp_buf;
+	std::queue<write_req_t*> TCPConn::_write_req_queue;
 
 	TCPConn::TCPConn(uint32_t id, TCPServer* server, uv_stream_t* server_stream) {
 		_id = id;
@@ -35,6 +34,7 @@ namespace gx {
 	}
 
 	TCPConn::TCPConn(uv_loop_t* loop) {
+		_id = TCPServer::genid();
 		init(loop);
 	}
 
@@ -45,15 +45,11 @@ namespace gx {
 		/* associate this with stream */
 		_socket.data = this;
 
-		_read_buf = uv_buf_init((char*)SAFE_MALLOC(READ_BUF_SIZE), READ_BUF_SIZE);
+		_read_buf = uv_buf_init(_inner_buf, READ_BUF_SIZE);
 		_connect_req.data = this;
 	}
 
 	TCPConn::~TCPConn() {
-		free(_read_buf.base);
-		_read_buf.base = nullptr;
-		_read_buf.len = 0;
-
 		log_debug("~TCPConn()");
 	}
 
@@ -70,16 +66,15 @@ namespace gx {
 		TCPConn* conn = (TCPConn*)handle->data;
 		if (nread < 0) {
 			if (nread == UV_EOF) {
-				log_info("active disconnect");
+				log_info("disconnect by peer, %s: %s", uv_err_name(nread), uv_strerror(nread));
 			}
 			else if (nread == UV_ECONNRESET) {
-				log_info("connection reset");
+				log_info("connection reset by peer, %s: %s", uv_err_name(nread), uv_strerror(nread));
 			}
 			else {
-				log_info("except disconnect");
+				log_error("except disconnect, %s: %s", uv_err_name(nread), uv_strerror(nread));
 			}
 			conn->close();
-			return_if_err(nread);
 		}
 		else if (nread == 0) {
 			/* Everything OK, but nothing read. */
@@ -171,7 +166,7 @@ namespace gx {
 			if (pclient->_connect_fail_handler != nullptr) {
 				pclient->_connect_fail_handler();
 			}
-			log_debug("connect Fail, %s:%s", uv_err_name(status), uv_strerror(status));
+			log_error("connect Fail, %s:%s", uv_err_name(status), uv_strerror(status));
 		}
 	}
 
@@ -181,31 +176,18 @@ namespace gx {
 			return false;
 		}
 
-		write_req_t* wr = (write_req_t*)SAFE_MALLOC(sizeof(write_req_t));
+		write_req_t* wr = pop_write_req();
 		wr->req.data = this;
 		wr->buf.base = (char*)buf;
 		wr->buf.len = nbuf;
 		int r = uv_write(&wr->req, (uv_stream_t*)(&_socket), &wr->buf, 1, TCPConn::after_write);
-		char tmp[100] = "aseifaoeswfijasef";
-		memcpy(wr->buf.base, (char*)tmp, 16);
-		wr->buf.len = 7;
 		return (0 == r);
-
-		//_write_req.data = this;
-		//uv_buf_t wbuf;
-		//wbuf.base = (char*)buf;
-		//wbuf.len = nbuf;
-		//int r = uv_write(&_write_req, (uv_stream_t*)(&_socket), &wbuf, 1, TCPConn::after_write);
-		//char tmp[100] = "aseifaoeswfijasef";
-		//memcpy(wbuf.base, (char*)tmp, 16);
-		//wbuf.len = 7;
-		//return (0 == r);
 	}
 
 	void TCPConn::after_write(uv_write_t* req, int status) {
 		write_req_t* wr = (write_req_t*)req;
 		TCPConn* conn = (TCPConn*)(wr->req.handle->data);
-		free(wr);
+		push_write_req(wr);
 
 		if (status < 0) {
 			if (!uv_is_closing((uv_handle_t*)req->handle)) {
@@ -220,18 +202,19 @@ namespace gx {
 		uv_handle_t* handle = (uv_handle_t*)(&_socket);
 		if (uv_is_closing(handle) == 0) {
 			_state = ConnState::closed;
-			log_debug("conn begin close");
+			log_debug("conn begin close, id=%d", _id);
 			uv_close((uv_handle_t*)(&_socket), TCPConn::after_close);
 		}
 	}
 
 	void TCPConn::after_close(uv_handle_t *handle) {
-		log_debug("conn after close");
 		TCPConn* conn = (TCPConn*)handle->data;
+		log_debug("conn after close, id=%d", conn->id());
+		bool pasv = (conn->_server != nullptr);
 		if (conn->_disconnect_handler != nullptr) {
 			conn->_disconnect_handler();
 		}
-		if (conn->_server) {
+		if (pasv) {
 			conn->_server->remove_conn(conn->id());
 		}
 	}
@@ -249,6 +232,30 @@ namespace gx {
 		_send_tmp_buf.reset();
 		Slice slice = std::move(pack(_send_tmp_buf, req, seq));
 		return send(slice.data(), slice.size());
+	}
+
+	write_req_t* TCPConn::pop_write_req() {
+		if (_write_req_queue.size() > 0) {
+			write_req_t* tmp = _write_req_queue.front();
+			_write_req_queue.pop();
+			return tmp;
+		}
+		else {
+			return new write_req_t();
+		}
+	}
+
+	int TCPConn::write_req_count() {
+		return _write_req_queue.size();
+	}
+
+	void TCPConn::push_write_req(write_req_t* wreq) {
+		if (_write_req_queue.size() < WRITE_REQ_QUEUE_SIZE) {
+			_write_req_queue.push(wreq);
+		}
+		else {
+			delete wreq;
+		}
 	}
 }
 

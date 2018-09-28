@@ -23,6 +23,7 @@ namespace gx {
 		static void on_connection(uv_stream_t* server, int status);
 
 	public:
+		static uint32_t genid();
 		bool listen(const char* ip, int port);
 		bool set_keepalive(int enable, unsigned int delay);
 		bool set_nodelay(bool enable);

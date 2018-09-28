@@ -18,6 +18,7 @@ struct AC_LoginReq : public ISerial {
 	: id(0),
 	  name(0)
 	{
+		log_debug("AC_LoginReq()");
 	}
 
 	~AC_LoginReq() {
@@ -46,6 +47,7 @@ struct AC_LoginRsp : public ISerial {
 	AC_LoginRsp()
 	: rc(0)
 	{
+		log_debug("AC_LoginRsp()");
 	}
 	~AC_LoginRsp() {
 		log_debug("~AC_LoginRsp()");

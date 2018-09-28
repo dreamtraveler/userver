@@ -3,7 +3,7 @@
 #include "net_coroutine.h"
 
 namespace gx {
-	int NetCoroutine::_incrid=0;
+	uint32_t NetCoroutine::_incrid=0;
 	std::unordered_map<unsigned, std::shared_ptr<NetCoroutine>> NetCoroutine::_co_map;
 
 	bool NetCoroutine::call(TCPConn* conn, IRpcMessage& msg) {

@@ -21,6 +21,10 @@ namespace gx {
 		server->add_conn(std::make_shared<TCPConn>(_gid, server, server_stream));
 	}
 
+	uint32_t TCPServer::genid() {
+		_gid++;
+		return _gid;
+	}
 
 	bool TCPServer::listen(const char* ip, int port) {
 		log_info("listen on %s: %d", ip, port);

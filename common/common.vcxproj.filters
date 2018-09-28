@@ -32,5 +32,6 @@
     <ClInclude Include="serial.h" />
     <ClInclude Include="application.h" />
     <ClInclude Include="net_coroutine.h" />
+    <ClInclude Include="object_pool.h" />
   </ItemGroup>
 </Project>

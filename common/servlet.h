@@ -7,6 +7,7 @@
 #include <tuple>
 #include "serial.h"
 #include "net_coroutine.h"
+#include "object_pool.h"
 
 namespace gx {
 	class TCPConn;
@@ -31,8 +32,8 @@ namespace gx {
 			return _use_coroutine;
 		}
 
-		virtual std::shared_ptr<ISerial> create_request(Buffer* stream) = 0;
-		virtual std::shared_ptr<ISerial> create_response() = 0;
+		virtual SerialPtr create_request(Buffer* stream) = 0;
+		virtual SerialPtr create_response() = 0;
 		//virtual std::shared_ptr<IRpcMessage> create_message() = 0;
 
 		virtual int sync_execute(std::shared_ptr<TCPConn> conn, ISerial* req, ISerial* rsp) = 0;
@@ -54,14 +55,15 @@ namespace gx {
 
 		Servlet() noexcept : ServletBase(_T::the_message_id, _T::the_message_name) {}
 
-		std::shared_ptr<ISerial> create_request(Buffer* buf) override {
-			std::shared_ptr<request_type> req = std::make_shared<request_type>();
+		SerialPtr create_request(Buffer* buf) override {
+			auto req = ObjectPool<request_type>::get();
 			req->unserial(buf);
-			return req;
+			return std::move(req);
 		}
 
-		std::shared_ptr<ISerial> create_response() override {
-			return std::make_shared<response_type>();
+		SerialPtr create_response() override {
+			auto rsp = ObjectPool<response_type>::get();
+			return std::move(rsp);
 		}
 
 		int sync_execute(std::shared_ptr<TCPConn> conn, ISerial* req, ISerial* rsp) override {
