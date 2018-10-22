@@ -143,6 +143,12 @@ namespace gx {
 			write(d, len);
 		}
 
+		void append_string(std::string s) {
+			uint16_t len = (uint16_t)s.size();
+			append_int16(len);
+			append(s.c_str(), len);
+		}
+
 		// append int64_t/int32_t/int16_t with network endian
 		void append_int64(int64_t x) {
 			int64_t be = swap_64(x);
@@ -288,6 +294,11 @@ namespace gx {
 			uint8_t result = peek_uint8();
 			skip(sizeof result);
 			return result;
+		}
+
+		std::string read_string() {
+			uint16_t len = read_uint16();
+			return next_string(len);
 		}
 
 		Slice toslice() const {

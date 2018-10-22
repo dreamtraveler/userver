@@ -1,8 +1,11 @@
 #ifndef __SERIAL_H__
 #define __SERIAL_H__
 #include <string>
+#include <vector>
 #include "platform.h"
 #include "buffer.h"
+
+using namespace gx;
 
 namespace gx {
 

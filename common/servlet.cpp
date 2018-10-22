@@ -35,7 +35,7 @@ namespace gx {
 		else {
 			auto req = it->second->create_request(buf);
 			auto rsp = it->second->create_response();
-			int r = it->second->sync_execute(conn, req.get(), rsp.get());
+			int r = it->second->sync_execute(std::move(conn), req.get(), rsp.get());
 			if (r < 0) {
 				conn->close();
 			}

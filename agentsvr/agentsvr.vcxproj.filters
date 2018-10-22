@@ -2,6 +2,13 @@
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
     <ClCompile Include="agentsvr.cpp" />
-    <ClCompile Include="ac_login.cpp" />
+    <ClCompile Include="impl\ac_login.cpp">
+      <Filter>impl</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="impl">
+      <UniqueIdentifier>{fb150783-3afc-46a2-a515-aabba435216c}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
 </Project>

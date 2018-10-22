@@ -16,9 +16,6 @@ namespace gx {
 	class ObjectPool
 	{
 	public:
-		ObjectPool();
-		~ObjectPool();
-
 		ObjectPool(const ObjectPool&) = delete;
 		ObjectPool& operator=(const ObjectPool&) = delete;
 

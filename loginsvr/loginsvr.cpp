@@ -7,7 +7,7 @@
 #include "timer.h"
 #include "buffer.h"
 #include "servlet.h"
-#include "rpc/ac_login.h"
+#include "agentsvr/AC_Login.h"
 #include "application.h"
 
 GX_NS_USING
@@ -18,7 +18,7 @@ void register_needed_servlet() {
 
 std::vector<std::shared_ptr<TCPConn>> conn_vec;
 static int __id;
-int MAX_CONN = 5000;
+int MAX_CONN = 5;
 void test(co_pull_t &sink) {
 	co_param_t param  = sink.get();
 	uint32_t id = std::get<0>(param);
@@ -40,26 +40,27 @@ void test(co_pull_t &sink) {
 	bool ok;
 	do {
 		AC_Login msg;
-		msg.req->id = id;
-		msg.req->name = 3;
-		log_debug("1 before call, id=%d", msg.req->id);
+		msg.req.id = id;
+		msg.req.randKey = 3;
+		msg.req.name = "tanlei";
+		log_debug("1 before call, id=%d", msg.req.id);
 		ok = co->call(tconn.get(), msg);
 		if (!ok) {
 			return;
 		}
-		log_debug("1 after call, rc=%d", msg.rsp->rc);
+		log_debug("1 after call, rc=%d, name=%s", msg.rsp.rc, msg.rsp.name.c_str());
 	} while (false);
 
 	do {
 		AC_Login msg;
-		msg.req->id = id;
-		msg.req->name = 3;
-		log_debug("2 before call, id=%d", msg.req->id);
+		msg.req.id = id;
+		msg.req.randKey = 3;
+		log_debug("2 before call, id=%d", msg.req.id);
 		ok = co->call(tconn.get(), msg);
 		if (!ok) {
 			return;
 		}
-		log_debug("2 after call, rc=%d", msg.rsp->rc);
+		log_debug("2 after call, rc=%d", msg.rsp.rc);
 	} while (false);
 
 	co->finished(true);

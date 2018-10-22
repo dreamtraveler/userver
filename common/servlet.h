@@ -34,7 +34,6 @@ namespace gx {
 
 		virtual SerialPtr create_request(Buffer* stream) = 0;
 		virtual SerialPtr create_response() = 0;
-		//virtual std::shared_ptr<IRpcMessage> create_message() = 0;
 
 		virtual int sync_execute(std::shared_ptr<TCPConn> conn, ISerial* req, ISerial* rsp) = 0;
 		virtual int async_execute(std::shared_ptr<TCPConn> conn, ISerial* req, ISerial* rsp, NetCoroutine* co) = 0;
@@ -67,16 +66,15 @@ namespace gx {
 		}
 
 		int sync_execute(std::shared_ptr<TCPConn> conn, ISerial* req, ISerial* rsp) override {
-			return execute(static_cast<request_type*>(req), static_cast<response_type*>(rsp));
+			return execute(std::move(conn), static_cast<request_type*>(req), static_cast<response_type*>(rsp));
 		}
 
 		int async_execute(std::shared_ptr<TCPConn> conn, ISerial* req, ISerial* rsp, NetCoroutine* co) override {
-			return execute(static_cast<request_type*>(req), static_cast<response_type*>(rsp), co);
+			return execute(std::move(conn), static_cast<request_type*>(req), static_cast<response_type*>(rsp), co);
 		}
 
-		int virtual execute(request_type* req, response_type* rsp) { return 0; }
-		int virtual execute(request_type* req, response_type* rsp, NetCoroutine* co) { return 0; }
-	private:
+		int virtual execute(std::shared_ptr<TCPConn> conn, request_type* req, response_type* rsp) { return 0; }
+		int virtual execute(std::shared_ptr<TCPConn> conn, request_type* req, response_type* rsp, NetCoroutine* co) { return 0; }
 	};
 
 	class ServletMgr {
