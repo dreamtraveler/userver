@@ -1,0 +1,15 @@
+%%csharp
+using System.Collections.Generic;
+%%
+extern G_RewardOpt;
+struct G_MailOpt {
+	int32 MailId;
+	int32 ConfigId;
+    int32 MailType;
+    int32 SendTime;
+    int32 MailStatus;
+    string Title;
+    string Content;
+    G_RewardOpt RewardOpts[];
+};
+%%

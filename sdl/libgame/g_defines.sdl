@@ -1,0 +1,217 @@
+%%
+
+enum {
+	G_VALUE_MONEY,              // 0
+    G_VALUE_GOLD,               // 1
+    G_VALUE_GEM,                // 2
+    G_VALUE_LEVEL,              // 3
+    G_VALUE_EXP,                // 4
+    G_VALUE_VIP,                // 5
+    G_VALUE_RATING,             // 6
+    G_VALUE_HEROSORT,           // 7
+    G_VALUE_BAGSORT,            // 8
+    G_VALUE_CHESTSLOT1,         // 9
+    G_VALUE_CHESTSLOT2,         // 10
+    G_VALUE_CHESTSLOT3,         // 11
+    G_VALUE_CHESTSLOT4,         // 12
+    G_VALUE_SLOT1_EXPIRED_TIME, // 13
+    G_VALUE_SLOT2_EXPIRED_TIME, // 14
+    G_VALUE_SLOT3_EXPIRED_TIME, // 15
+    G_VALUE_SLOT4_EXPIRED_TIME, // 16
+    G_VALUE_MAXGAINEDEXP,       // 17 一天内获取的最多经验
+    G_VALUE_FREELOTTOTIME,      // 18 剩余免费抽奖次数
+    G_VALUE_RESETTIME,          // 19 重置玩家信息的时间戳
+    G_VALUE_GETCHESTNUMONEDAY,  // 20 当天获取宝箱数目
+    G_VALUE_LOTTOTIME,          // 21 抽奖次数，保底用
+    G_VALUE_WINTIMES,           // 22 胜场数
+    G_VALUE_GLOBALMAILINDEX,    // 23 玩家已加载的全局邮件索引
+    G_VALUE_GUIDE,              // 24 新手引导进度,已废弃
+    G_VALUE_CHESTINDEX,         // 25 获胜获取宝箱的序列号
+    G_VALUE_LOSETIMES,          // 26 失败场数
+    G_VALUE_TIETIMES,           // 27 平局场数
+    G_VALUE_ONLINETIME,         // 28 在线时长
+    G_VALUE_LAST_SINGIN_TIME,   // 29 上次签到时间戳
+    G_VALUE_WEEKLY_SINGIN_TIMES, // 30 当前每周签到次数
+    G_VALUE_ZAN,                 // 31 点赞数
+    G_VALUE_POPULAR,             // 32 受欢迎度
+    G_VALUE_LAST_LOGIN_TIME,     // 33 上次登陆时间戳,已废弃
+    G_VALUE_CONTINUE_LOGIN_TIMES,// 34 连续登陆次数
+    G_VALUE_LAST_LOGOUT_TIME,   // 35 上次退出时间,已废弃
+    G_VALUE_CLOSE_ELO,          // 36 close 模式 elo 分
+    G_VALUE_OPEN_ELO,           // 37 open 模式 elo 分
+    G_VALUE_CLOSE_RANK,         // 38 close 模式 elo 分
+    G_VALUE_OPEN_RANK,          // 39 open 模式 elo 分
+    G_VALUE_CLOSE_WIN_TIMES,    // 40 close 模式 胜场数
+    G_VALUE_CLOSE_SUM_TIMES,    // 41 close 模式 总场数
+	G_VALUE_OPEN_WIN_TIMES,     // 42 open 模式 胜场数
+	G_VALUE_OPEN_SUM_TIMES,     // 43 open 模式 总场数
+    G_VALUE_CLOSE_CONTINUE_WIN, // 44 close 模式连胜
+    G_VALUE_OPEN_CONTINUE_WIN,  // 45 open 模式连胜
+    G_VALUE_CELLID,             // 46 open 模式战区id
+	G_VALUE_LAST_OPEN_FREECHSET_TIME, // 47 上次开启免费宝箱的时间戳
+	G_VALUE_CONTINUE_OPEN_FREECHSET_TIMES,  // 48 连续开启免费宝箱的天数
+	G_VALUE_LICENSE1_ACHIEVE_TIME, // 49 license1 获取时间
+	G_VALUE_LICENSE2_ACHIEVE_TIME, // 50 license2 获取时间
+	G_VALUE_LICENSE3_ACHIEVE_TIME, // 51 license4 获取时间
+	G_VALUE_LICENSE4_ACHIEVE_TIME, // 52 license4 获取时间
+	G_VALUE_LICENSE_STAR,  		// 53 执照星星数
+	G_VALUE_LICENSE_TAKED_REWARD, // 54 位图存储已领取的license礼物
+	G_VALUE_TOTAL_LOGIN_TIMES,   // 55 总登陆天数
+	G_VALUE_ACHIEVEMENT_SCORE,   // 56 成就积分
+	G_VALUE_ALREADY_TAKED_ACHI_SCORE, //57 已领取的成就积分
+	G_VALUE_CLOSE_CONTINUE_LOST, // 58 close 模式连败
+	G_VALUE_TASK_COUNT,        	 // 59 任务总数
+	G_VALUE_UNLOCK_ARENA3_TIME,  // 60 解锁arena3的到期时间
+
+    G_VALUE_UNKNOWN,
+};
+
+
+enum {
+    G_CHAT_CHANNEL_WORLD,
+    G_CHAT_CHANNEL_ROOM,
+    G_CHAT_CHANNEL_PERSON,
+    G_CHAT_CHANNEL_TEAM,
+    G_CHAT_CHANNEL_SYSTEM,
+    G_CHAT_CHANNEL_UNKNOWN,
+};
+
+//response code
+enum {
+    RC_SUCCESS,                 // 0 操作成功
+    RC_REQ_PARAM_ERROR,         // 1 请求参数错误
+    RC_TABLE_VERSION_ERROR,     // 2 表版本错误
+    RC_LESS_GOLD,               // 3 金币不足
+    RC_LESS_GEM,                // 4 钻石不足
+    RC_JOIN_ROOM_FAIL,          // 5 加入房间失败
+    RC_CHOOSE_HERO_FAIL,        // 6 出战英雄失败
+    RC_USE_BAGITEM_FAIL,        // 7 使用背包物品失败
+    RC_DEL_EXPITEM_FAIL,        // 8 删除过期物品失败
+    RC_ITEM_EXPIRED,            // 9 道具已过期
+    RC_CONFIRM_TALENTS_FAIL,    // 10 设置天赋失败
+    RC_RESET_TALENTS_FAIL,      // 11 重置天赋失败
+    RC_OPEN_CHEST_FAIL,         // 12 开启宝箱失败
+    RC_CHEST_NOT_EXPIRED,       // 13 宝箱未到开启时间
+    RC_GET_REWARD_FAIL,         // 14 获取宝箱奖励失败
+    RC_ALREADY_FRIEND,          // 15 对方已经是好友
+    RC_ALREADY_OTHER_FRIEND,    // 16 已经是对方的好友
+    RC_OFFLINE,                 // 17 对方离线
+    RC_PLAYER_NOTEXIST,         // 18 玩家不存在
+    RC_ADD_FRIEND_FAIL,         // 19 添加好友失败
+    RC_SELF_FRIEND_FULL,        // 20 自己好友列表满
+    RC_OTHER_FRIEND_FULL,       // 21 对方好友列表满        
+    RC_DEL_FRIEND_FAIL,         // 22 删除好友失败
+    RC_NOT_OTHER_FRIEND,        // 23 不是对方好友
+    RC_SEND_MESSAGE_FAIL,       // 24 发送消息失败
+    RC_ILLEGAL_STRING,          // 25 非法字符串
+    RC_DUPLICATE_NAME,          // 25 重复名字
+    RC_ALREADY_BLACKLIST,       // 26 已经在自己黑名单中
+    RC_ON_BLACKLIST,            // 27 在自己的黑名单中
+    RC_ON_OTHER_BLACKLIST,      // 28 在对方的黑名单中
+    RC_BLACKLIST_FULL,          // 29 黑名单已满
+    RC_DEL_MAIL_FAIL,           // 30 删除邮件失败
+    RC_RECEIVE_ATTACHES_FAIL,   // 31 领取附件失败
+    RC_NOT_POSSESS_HERO,        // 32 未拥有这个英雄
+    RC_LESS_HEROSHARD,          // 33 英雄碎片不足
+    RC_MODIFY_DECLARATION_FAIL, // 34 修改宣言失败
+    RC_SIGNIN_FAIL,             // 35 签到失败
+    RC_TAKE_CHI_RWD_FAIL,       // 36 领取成就奖励失败
+    RC_ALREADY_POSSESS_HERO,    // 37 已经拥有该英雄
+    RC_EXCHANGE_HERO_FAIL,      // 38 兑换英雄失败
+	RC_VIDEO_NOT_EXIST,         // 39 录像不存在
+	RC_TAKE_LICENSE_RWD_FAIL,   // 40 领取license礼物不成功
+	RC_STAGE_NOT_OPEN,          // 41 关卡未开启
+	RC_TOKEN_INVALID,           // 42 token无效
+	RC_TRIGGER_FIRST_EVENT_FAIL, // 43 触发首次时间失败
+    RC_UNKNOWN,
+};
+
+//rank type
+enum {
+    G_RANK_CLOTH = 1,   //服装
+    G_RANK_SKILL,       //技能
+    G_RANK_RATING,      //段位
+    G_RANK_ZAN,         //点赞
+    G_RANK_POPULAR,     //欢迎度
+    G_RANK_HERO,        //英雄
+    G_RANK_ACHI,        //成就
+    G_RANK_GRADE_OPEN,  //open模式段位
+    G_RANK_TOP_GRADE_OPEN,  //open模式段位
+    G_RANK_UNKNOWN,
+};
+%define G_RANK_LIMIT   10000
+
+//achievement state
+enum {
+    G_ACHI_INIT,
+    G_ACHI_FIN,
+    G_ACHI_TAKED,
+};
+
+//global kv index
+enum {
+    G_LASTR_RESET_WEEK = 1,
+    G_LASTR_RESET_MONTH = 2,
+};
+
+enum {
+    G_PLAYER_STATE_ONLINE,
+    G_PLAYER_STATE_OFFLINE,
+};
+
+enum{
+    G_HERO_WIN_TIMES,
+    G_HERO_LOSE_TIMES,
+    G_HERO_TIE_TIMES,
+};
+
+//achievement
+enum{
+	ACHI_START,
+	ACHI_TOTAL_LOGIN,					// 累计签到
+	ACHI_TOTAL_ONLINE,					// 累计在线时长（分钟）
+	ACHI_TOTAL_MAP,						// 总探索的地图数量
+	ACHI_TOTAL_RACE,					// 累计参与的竞速赛场数
+	ACHI_TOTAL_BATTLE,					// 累计参与的道具赛场数
+	ACHI_TOP_SCORE_DPRACTISE,			// 组队练习模式的最高分
+	ACHI_TOTAL_WIN_BATTLE,				// 道具赛累计胜场
+	ACHI_CONTINUE_WIN_BATTLE,			// 道具赛连胜场数
+	ACHI_RANK_ZONE_BATTLE,				// 道具战排位达到所在战区排行榜？名
+	ACHI_BEYOND_SCORE_BATTLE,			// 道具战领先？分以上获胜
+	ACHI_TOTAL_ITEM_ONEROUND_BATTLE, 	// 单局道具赛累计使用道具？次及以上
+	ACHI_TOTAL_COIN,					// 累计获得？金币
+	ACHI_TOTAL_CHIP,					// 累计获得角色碎片个数
+	ACHI_TOTAL_OPEN_CHEST,				// 累计开启宝箱
+	ACHI_CONTINUE_DAY_OPEN_FREECHEST,	// 连续？天开启free chest
+	ACHI_TOTAL_FRIEDN,					// 共有？个好友
+	ACHI_TOTAL_WIN_SAME_FRIEND,   		// 与同一名好友组队累计获胜？次
+	ACHI_COMPLETE_LICENSE_1_6,          // 完成license1-6
+	ACHI_LOGIN_TOTAL_DAYS, 				// 总登陆天数
+};
+
+//pvp mode
+enum{
+    G_MODE_CLOSE,         // 竞速模式
+    G_MODE_OPEN,          // 抢食客模式
+};
+
+//firstevent
+enum{
+	FT_START,
+	FT_START_MATCH_CASUALPVP,           //首次点击开始休闲模式
+	FT_CANCEL_MATCH_CASUALPVP,			//首次取消休闲模式匹配
+	FT_SUCCESS_MATCH_CASUALPVP, 		//首次匹配成功
+	FT_ENTER_CASUALPVP,					//首次进入休闲模式
+	FT_FINISH_MATCH_CASUALPVP,			//首次完成休闲模式
+	FT_PLAYER_UPGRADE,					//首次升级
+	FT_END
+};
+
+%define G_RAND_MAX              10000
+%define G_NICKNAME_LIMIT        8
+%define G_USERNAME_LIMIT        64
+%define G_FRIEND_MAX            50
+%define G_FAKE_RACE_MODE_STAGE_ID 		46
+%define G_FAKE_BATTLE_MODE_STAGE_ID 	47
+
+%%

@@ -1,0 +1,275 @@
+%%csharp
+using System.Collections.Generic;
+
+%include "message.sdl"
+
+extern G_BagItemOpt;
+extern G_ValueOpt;
+extern G_StepOpt;
+extern G_RoomPlayerOpt;
+extern G_LobbyPlayerOpt;
+extern G_HeroOpt;
+extern G_RewardOpt;
+extern G_WorldPlayerOpt;
+extern G_ChatMessageOpt;
+extern G_AchievementItemOpt;
+extern G_TeamPlayerOpt;
+extern G_LicenseMissionOpt;
+extern G_AchiTypeScoreOpt;
+extern G_TaskOpt;
+
+message CL_NotifyTask<CL_NOTIFY_TASK>{
+	struct request{
+		G_TaskOpt currTaskOpt;
+	};	
+};
+
+message CL_NotifyAchiTypeScore<CL_NOTIFY_ACHI_TYPE_SCORE>{
+	struct request{
+		G_AchiTypeScoreOpt achiTypeScores[];
+	};
+};
+
+message CL_NotifyLevelUp<CL_NOTIFY_LEVEL_UP>{
+	struct request{
+		int32 level;
+		G_RewardOpt rewards[];
+	};
+};
+
+message CL_NotifyLicenseMissions<CL_NOTIFY_LICENSE_MISSIONS>{
+	struct request{
+		G_LicenseMissionOpt missions[];
+	};	
+};
+
+message CL_NotifyConfirmExpired<CL_NOTIFY_CONFIRM_EXPIRED>{
+	struct request{
+		int32 expiredPlayers[];
+	};	
+};
+
+message CL_NotifyNewMail<CL_NOTIFY_NEWMAIL>{
+    struct request {
+    };
+};
+
+message CL_NotifyMessage<CL_NOTIFY_MESSAGE> {
+    struct request {
+        G_ChatMessageOpt messageOpt;
+    };
+};
+
+message CL_NotifyRefuseInviteMatch<CL_NOTIFY_REFUSE_INVITE_MATCH> {
+	struct request{
+		int32 invitee;
+		string inviteeName;
+	};	
+};
+
+message CL_NotifyAcceptFriend<CL_NOTIFY_ACCEPTFRIEND>{
+    struct request{
+        G_WorldPlayerOpt receiver;
+    };
+};
+
+message CL_NotifyAddFriend<CL_NOTIFY_ADDFRIEND>{
+    struct request {
+        G_WorldPlayerOpt requester;
+    };
+};
+
+message CL_NotifyRefuseFriend<CL_NOTIFY_REFUSE_FRIEND>{
+    struct request {
+        G_WorldPlayerOpt receiver;
+    };
+};
+
+message CL_NotifyItems<CL_NOTIFY_ITEMS> {
+    struct request {
+        G_BagItemOpt items[];
+    };
+};
+
+message CL_NotifyRewards<CL_NOTIFY_REWARDS> {
+    struct request {
+        G_RewardOpt rewards[];
+    };
+};
+
+message CL_NotifyRankChange<CL_NOTIFY_RANK_CHANGE> {
+    struct request {
+        int8 pvpmode;
+        int32 oldrank;
+        int32 newrank;
+        int32 deltaStar;
+        int32 eloPoint;
+        int32 winPoint;
+        int32 perfPoint;
+    };
+};
+
+message CL_NotifyValues<CL_NOTIFY_VALUES> {
+    struct request {
+         G_ValueOpt values[];
+    };
+};
+
+message CL_NotifyExpiredItems<CL_NOTIFY_EXPIREDITEMS>{
+    struct request {
+        G_BagItemOpt items[];
+    };
+};
+
+message CL_NotifyHeros<CL_NOTIFY_HEROS> {
+    struct request {
+         G_HeroOpt heros[];
+    };
+};
+
+message CL_NotifySyncLobbyInfo<CL_NOTIFY_SYNCLOBBYINFO> {
+    struct request {
+        int32 lobbyid;
+        G_LobbyPlayerOpt players[];
+    };
+};
+
+message CL_NotifySyncRoomInfo<CL_NOTIFY_SYNCROOMINFO> {
+    struct request {
+        int32 roomId;
+        G_RoomPlayerOpt players[];
+    };
+};
+
+message CL_NotifyReloadInfo<CL_NOTIFY_RELOADINFO> {
+    struct request {
+        int32 roomId;
+        G_RoomPlayerOpt players[];
+        int32 stageId;
+        int32 gameTime;
+        int32 lockStepTime;
+        int32 seeds[];
+    };
+};
+
+
+message CL_NotifySyncStep<CL_NOTIFY_SYNCSTEP> {
+    struct request {
+        int32 stepId;
+        G_StepOpt actions[];
+    };
+};
+
+message CL_NotifyEnterScene<CL_NOTIFY_ENTERSCENE> {
+    struct request {
+        int32 roomId;
+		int32 stageId;
+    };
+};
+
+message CL_NotifyLoadingScene<CL_NOTIFY_LOADINGSCENE> {
+    struct request {
+        int32 stageId;
+        int32 gameTime;
+        int32 lockStepTime;
+    };
+};
+
+message CL_NotifyLoginMap<CL_NOTIFY_LOGINMAP> {
+    struct request {
+        string ip;
+        int32 port;
+        int32 randKey;
+        int32 roomId;
+    };
+};
+
+message CL_NotifyStartGame<CL_NOTIFY_STARTGAME> {
+    struct request {
+        int32 seeds[];
+    };
+};
+message CL_NotifyReloadFrameNum<CL_NOTIFY_RELOADFRAMENUM> {
+    struct request {
+        int32 frameNum;
+    };
+};
+
+message CL_NotifyReloadFrame<CL_NOTIFY_RELOADFRAME> {
+    struct request {
+        uint8 framestream[];
+    };
+};
+
+message CL_NotifyAchievement<CL_NOTIFY_ACHIEVEMENT> {
+    struct request {
+        G_AchievementItemOpt items[];
+    };
+};
+
+message CL_NotifyDisbandTeam<CL_NOTIFY_DISBAND_TEAM> {
+    struct request {
+    };
+};
+
+message CL_NotifyInviteMatch<CL_NOTIFY_INVITE_MATCH> {
+    struct request {
+        int32 inviter;
+        string name;
+        int32 teamId;
+    };
+};
+
+message CL_NotifyTeamMatchBegin<CL_NOTIFY_TEAM_MATCH_BEGIN> {
+    struct request {
+    };
+};
+
+message CL_NotifySyncTeamInfo<CL_NOTIFY_SYNC_TEAM_INFO> {
+    struct request {
+        int32 teamId;
+        G_TeamPlayerOpt players[];
+    };
+};
+
+message CL_NotifyGoHome<CL_NOTIFY_GO_HOME> {
+    struct request {
+    };
+};
+
+message CL_NotifyKickout<CL_NOTIFY_KICKOUT> {
+    struct request {
+        uint8 reason;
+    };
+};
+
+message CL_NotifyConfirmInfo<CL_NOTIFY_CONFIRM_INFO> {
+    struct request {
+        int32 playerId;
+    };
+};
+
+message CL_NotifyPrepareInfo<CL_NOTIFY_PREPARE_INFO> {
+    struct request {
+        int32 playerId;
+    };
+};
+
+message CL_NotifyLeaveMatchRoom<CL_NOTIFY_LEAVE_MATCH_ROOM> {
+    struct request {
+    };
+};
+
+message CL_NotifyExitScene<CL_NOTIFY_EXIT_SCENE> {
+    struct request {
+    };
+};
+
+
+message CL_NotifyLoadingProgress<CL_NOTIFY_LOADING_PROGRESS> {
+    struct request {
+        int32 playerId;
+        int32 progress;
+    };
+};
+

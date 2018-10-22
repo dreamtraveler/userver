@@ -1,0 +1,11 @@
+%%csharp
+using System.Collections.Generic;
+%%
+
+struct G_FriendItemOpt {
+    int32 id;
+    string name;
+    int32 level;
+    int32 levelRank;
+};
+%%

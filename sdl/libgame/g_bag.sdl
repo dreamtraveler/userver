@@ -1,0 +1,17 @@
+
+%%
+
+struct G_BagItemOpt {
+    int32  id;
+    int32  cfgid;
+    int32  count;
+    int32  createTime;
+    int32 value;
+};
+
+struct G_RewardOpt {
+    int32 cfgid;
+    int32 count;
+};
+
+%%

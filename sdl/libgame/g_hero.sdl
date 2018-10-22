@@ -1,0 +1,18 @@
+%%csharp
+using System.Collections.Generic;
+%%
+
+struct G_TalentItemOpt {
+    int32 id;
+    int32 level;
+};
+
+struct G_HeroOpt {
+    int32 id;
+    int32 level;
+    int32 skin;
+    int32 wintimes;
+    int32 losetimes;
+    int32 tietimes;
+};
+%%

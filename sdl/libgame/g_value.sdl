@@ -1,0 +1,9 @@
+
+%%
+
+struct G_ValueOpt {
+    uint8 id;
+    int32 value;
+};
+
+%%
